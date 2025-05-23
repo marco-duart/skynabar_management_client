@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/auth-context";
 import { useNavigate } from "react-router-dom";
 import { UserDTO } from "../../services/user/DTO";
 import { ReactNode } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   requiredRole?: UserDTO.Role[];
@@ -19,12 +20,14 @@ export const PrivateRoute = ({
   useEffect(() => {
     if (!user) {
       navigate("/", { replace: true });
-      //toast?
+      toast.error("Você precisa estar logado para acessar esta página.");
       return;
     }
 
     if (requiredRole && !requiredRole.includes(user.role)) {
       navigate("/access-denied", { replace: true });
+      toast.error("Você não tem permissão para acessar esta página.");
+      return;
     }
   }, [user, requiredRole, navigate]);
 
