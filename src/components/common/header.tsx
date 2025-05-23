@@ -24,7 +24,7 @@ export const Header = () => {
               <S.NavLink href="/shopping-list">Lista de Compras</S.NavLink>
             </S.NavItem>
             <S.NavItem>
-              <S.NavLink href="/moviments">Movimentações</S.NavLink>
+              <S.NavLink href="/movements">Movimentações</S.NavLink>
             </S.NavItem>
           </S.NavList>
 
