@@ -1,30 +1,51 @@
 import styled, { css } from "styled-components";
 
-export type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "outline"
-  | "icon"
-  | "text";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "icon" | "text";
+export type ButtonSize = 'small' | 'medium' | 'large';
 
-export const ButtonContainer = styled.button<{
+interface ButtonContainerProps {
   variant: ButtonVariant;
   isLoading?: boolean;
-}>`
+  hasIcon: boolean;
+  iconPosition: 'left' | 'right';
+  size: ButtonSize;
+}
+
+const sizeStyles = {
+  small: css`
+    padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
+    font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  `,
+  medium: css`
+    padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
+    font-size: ${({ theme }) => theme.typography.fontSize.base};
+  `,
+  large: css`
+    padding: ${({ theme }) => theme.spacing(3)} ${({ theme }) => theme.spacing(4)};
+    font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  `,
+};
+
+export const ButtonContainer = styled.button<ButtonContainerProps>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.spacing(2)};
   border-radius: ${({ theme }) => theme.shape.borderRadius.md};
   font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
-  font-size: ${({ theme }) => theme.typography.fontSize.base};
-  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
   outline: none;
   position: relative;
   overflow: hidden;
+  line-height: 1;
+
+  ${({ size }) => sizeStyles[size]}
+
+  ${({ hasIcon, iconPosition }) => hasIcon && css`
+    flex-direction: ${iconPosition === 'left' ? 'row' : 'row-reverse'};
+  `}
 
   &:disabled {
     cursor: not-allowed;
@@ -130,4 +151,15 @@ export const ButtonContainer = styled.button<{
         }
       }
     `}
+`;
+
+export const IconWrapper = styled.span<{ position: 'left' | 'right' }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    width: ${({ theme }) => theme.spacing(3)};
+    height: ${({ theme }) => theme.spacing(3)};
+  }
 `;
