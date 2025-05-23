@@ -1,10 +1,10 @@
 import * as S from "./styles";
 
-interface LoadingSpinnerProps {
+interface Props {
   size?: "small" | "medium";
 }
 
-export const LoadingSpinner = ({ size = "medium" }: LoadingSpinnerProps) => {
+export const LoadingSpinner = ({ size = "medium" }: Props) => {
   return (
     <S.Container $size={size}>
       <S.SpinnerIcon $size={size} />
