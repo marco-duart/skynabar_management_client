@@ -3,9 +3,11 @@ import { LoginFormData, loginResolver } from "../../schemas/login-schema";
 import * as S from "./styles";
 import { useAuth } from "../../contexts/auth-context";
 import { LoadingSpinner } from "../loading-spinner";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const { login, isLoading } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,7 +17,11 @@ export const LoginForm = () => {
   });
 
   const handleLogin = async (data: LoginFormData) => {
-    await login(data);
+    const loginResult = await login(data);
+
+    if (loginResult) {
+      navigate("/home");
+    }
   };
 
   return (
