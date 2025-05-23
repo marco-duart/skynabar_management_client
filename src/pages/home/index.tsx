@@ -2,6 +2,9 @@ import { useProducts } from "../../hooks/use-products";
 import { ProductsTable } from "../../components/tables/products-table";
 import * as S from "./styles";
 import { LoadingSpinner } from "../../components/loading-spinner";
+import { EmptyState } from "../../components/ui/empty-state";
+import { Box } from '@styled-icons/fa-solid';
+import { theme } from "../../assets/styles/theme";
 
 export const HomePage = () => {
   const { isLoading, hasProducts } = useProducts();
@@ -20,9 +23,11 @@ export const HomePage = () => {
             {hasProducts ? (
               <ProductsTable />
             ) : (
-              <S.EmptyState>
-                <S.EmptyStateText>Nenhum produto cadastrado</S.EmptyStateText>
-              </S.EmptyState>
+              <EmptyState
+                icon={<Box size={48} color={theme.colors.text.secondary} />}
+                title="Nenhum produto cadastrado"
+                description="Comece adicionando seu primeiro produto ao estoque"
+              />
             )}
           </>
         )}
