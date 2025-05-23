@@ -25,7 +25,7 @@ export const ProductsTable = () => {
     selectedProduct,
   } = useProducts();
   const [columnResizeMode] = useState<ColumnResizeMode>('onChange');
-  const isMobile = useMediaQuery(theme.mediaQuery.mobileL);
+  const isTabletOrLarger = useMediaQuery(theme.mediaQuery.tablet);
 
   const columns: ColumnDef<IProduct.Model>[] = [
     {
@@ -93,7 +93,7 @@ export const ProductsTable = () => {
 
   if (isLoading) return <div>Carregando...</div>;
 
-  if (isMobile) {
+  if (!isTabletOrLarger) {
     return (
       <S.MobileContainer>
         {products.map(product => (
