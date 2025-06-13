@@ -14,4 +14,16 @@ export namespace IProductCategory {
     };
     export type Response = Model;
   }
+
+  export namespace IGetProductCategories {
+    export type Response = Model[];
+  }
+
+  export namespace IUpdateProductCategory {
+    export type Params = {
+      name?: string;
+      description?: string | null;
+    };
+    export type Response = Model;
+  }
 }
