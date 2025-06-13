@@ -83,3 +83,46 @@ export const LogoImage = styled.img`
     max-width: 150px;
   }
 `;
+
+export const Select = styled.select`
+  padding: ${({ theme }) => theme.spacing(3)};
+  border: 1px solid ${({ theme }) => theme.colors.text.disabled};
+  border-radius: ${({ theme }) => theme.shape.borderRadius.md};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  transition: all 0.2s ease;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary.main};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primary.light};
+  }
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(3)};
+  margin-top: ${({ theme }) => theme.spacing(4)};
+`;
+
+export const Button = styled.button`
+  padding: ${({ theme }) => theme.spacing(3)};
+  background-color: ${({ theme }) => theme.colors.text.disabled};
+  color: ${({ theme }) => theme.colors.common.white};
+  border: none;
+  border-radius: ${({ theme }) => theme.shape.borderRadius.md};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.text.secondary};
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+`;
