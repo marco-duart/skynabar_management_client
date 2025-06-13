@@ -1,9 +1,9 @@
-import { useProducts } from '../../hooks/use-products';
-import * as S from './styles';
-import { LoadingSpinner } from '../../components/loading-spinner';
-import { Button } from '../../components/ui/button';
-import { Print } from '@styled-icons/material';
-import { useTheme } from 'styled-components';
+import { useProducts } from "../../hooks/use-products";
+import * as S from "./styles";
+import { LoadingSpinner } from "../../components/loading-spinner";
+import { Button } from "../../components/ui/button";
+import { Print } from "@styled-icons/material";
+import { useTheme } from "styled-components";
 
 export const ShoppingListPage = () => {
   const theme = useTheme();
@@ -19,11 +19,12 @@ export const ShoppingListPage = () => {
 
   return (
     <S.PageContainer>
+      <S.PrintStyles />
       <S.Header>
         <S.Title>Lista de Compras</S.Title>
         {shoppingList.length > 0 && (
-          <Button 
-            variant="primary" 
+          <Button
+            variant="primary"
             icon={<Print size={18} color={theme.colors.common.white} />}
             onClick={handlePrint}
           >
@@ -37,14 +38,14 @@ export const ShoppingListPage = () => {
           <S.ListHeader>
             <S.HeaderItem>Produto</S.HeaderItem>
             <S.HeaderItem>Quantidade</S.HeaderItem>
+            <S.HeaderItem>Medida</S.HeaderItem>
           </S.ListHeader>
-          
-          {shoppingList.map(item => (
+
+          {shoppingList.map((item) => (
             <S.ListItem key={item.id}>
               <S.ProductName>{item.name}</S.ProductName>
-              <S.Quantity>
-                {item.to_buy} {item.unit_type}
-              </S.Quantity>
+              <S.Quantity>{item.to_buy}</S.Quantity>
+              <S.Unit>{item.translated_unit}</S.Unit>
             </S.ListItem>
           ))}
         </S.ListContainer>

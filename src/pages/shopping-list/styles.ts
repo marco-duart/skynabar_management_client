@@ -30,7 +30,7 @@ export const ListContainer = styled.div`
 
 export const ListHeader = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
   background-color: ${({ theme }) => theme.colors.primary.main};
   color: ${({ theme }) => theme.colors.common.white};
   padding: ${({ theme }) => theme.spacing(3)};
@@ -38,12 +38,17 @@ export const ListHeader = styled.div`
 `;
 
 export const HeaderItem = styled.div`
-  text-align: left;
+  text-align: center;
+
+  &:first-child {
+    text-align: left;
+  }
 `;
 
 export const ListItem = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
+  align-items: center;
   padding: ${({ theme }) => theme.spacing(3)};
   border-bottom: 1px solid ${({ theme }) => theme.colors.background.light};
 
@@ -61,7 +66,11 @@ export const ProductName = styled.div`
 `;
 
 export const Quantity = styled.div`
-  text-align: left;
+  text-align: center;
+`;
+
+export const Unit = styled.div`
+  text-align: center;
 `;
 
 export const EmptyState = styled.div`
@@ -94,15 +103,22 @@ export const PrintStyles = styled.div`
     body * {
       visibility: hidden;
     }
-    ${ListContainer}, ${ListContainer} * {
+    ${PageContainer}, ${PageContainer} * {
       visibility: visible;
     }
-    ${ListContainer} {
+    ${PageContainer} {
       position: absolute;
       left: 0;
       top: 0;
       width: 100%;
+      padding: 0;
+    }
+    ${ListContainer} {
       box-shadow: none;
+      border-radius: 0;
+    }
+    ${Header} {
+      display: none;
     }
   }
 `;
