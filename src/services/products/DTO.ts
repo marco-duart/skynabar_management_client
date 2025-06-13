@@ -1,11 +1,27 @@
 export namespace IProduct {
-  export type UnitType = "unit";
+  export enum UnitEnum {
+    unit = 0,
+    liter = 1,
+    kilogram = 2,
+    bottle = 3,
+    pack = 4,
+    box = 5,
+  }
+
+  export const UnitLabels: Record<keyof typeof UnitEnum, string> = {
+    unit: "Unidade",
+    liter: "Litro",
+    kilogram: "Quilo",
+    bottle: "Garrafa",
+    pack: "Pacote",
+    box: "Caixa",
+  };
 
   export interface Model {
     id: number;
     name: string;
     sku: string;
-    unit_type: UnitType;
+    unit_type: keyof typeof UnitEnum;
     current_quantity: string;
     ideal_quantity: string;
     product_category_id: number;
@@ -19,7 +35,7 @@ export namespace IProduct {
     current: string;
     ideal: string;
     to_buy: string;
-    unit_type: UnitType;
+    unit_type: keyof typeof UnitEnum;
   }
 
   export namespace ICreateProduct {
@@ -27,7 +43,7 @@ export namespace IProduct {
       product: {
         name: string;
         sku: string;
-        unit_type: UnitType;
+        unit_type: keyof typeof UnitEnum;
         current_quantity: number;
         ideal_quantity: number;
         product_category_id: number;
@@ -37,6 +53,11 @@ export namespace IProduct {
   }
 
   export namespace IGetProducts {
+    export type Params = {
+      name?: string;
+      sku?: string;
+      product_category_id?: number;
+    };
     export type Response = Model[];
   }
 

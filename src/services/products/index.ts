@@ -1,8 +1,9 @@
 import { isAxiosError } from "axios";
 import api from "../api";
 import { IProduct } from "./DTO";
+import { buildProductFilters } from "../../helpers/build-products-filters";
 
-export const createProduct = async (
+export const createProductService = async (
   params: IProduct.ICreateProduct.Params,
   token: string
 ) => {
@@ -33,14 +34,25 @@ export const createProduct = async (
   }
 };
 
-export const getProducts = async (token: string) => {
+export const getProductsService = async (
+  token: string,
+  filters?: {
+    name?: string;
+    sku?: string;
+    productCategoryId?: number;
+  }
+) => {
   try {
+    const ransackParams = filters ? buildProductFilters(filters) : undefined;
+
     const response = await api.get<IProduct.IGetProducts.Response>(
       "/products",
       {
         headers: { Authorization: `Bearer ${token}` },
+        params: ransackParams,
       }
     );
+
     return {
       success: true,
       message: "Produtos listados com sucesso",
@@ -60,7 +72,7 @@ export const getProducts = async (token: string) => {
   }
 };
 
-export const updateIdealQuantity = async (
+export const updateIdealQuantityService = async (
   productId: number,
   params: IProduct.IUpdateIdealQuantity.Params,
   token: string
@@ -92,7 +104,7 @@ export const updateIdealQuantity = async (
   }
 };
 
-export const withdrawProduct = async (
+export const withdrawProductService = async (
   productId: number,
   params: IProduct.IWithdrawProduct.Params,
   token: string
@@ -124,7 +136,7 @@ export const withdrawProduct = async (
   }
 };
 
-export const reverseWithdrawal = async (
+export const reverseWithdrawalService = async (
   productId: number,
   params: IProduct.IReverseWithdrawal.Params,
   token: string
@@ -156,7 +168,7 @@ export const reverseWithdrawal = async (
   }
 };
 
-export const restockProduct = async (
+export const restockProductService = async (
   productId: number,
   params: IProduct.IRestockProduct.Params,
   token: string
@@ -188,7 +200,7 @@ export const restockProduct = async (
   }
 };
 
-export const getShoppingList = async (token: string) => {
+export const getShoppingListService = async (token: string) => {
   try {
     const response = await api.get<IProduct.IGetShoppingList.Response>(
       "/products/shopping_list",
