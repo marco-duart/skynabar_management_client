@@ -16,6 +16,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (params: LoginDTO.Params) => Promise<boolean>;
   logout: () => void;
+  isManager: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserDTO.Model | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(JSON.parse(storedUser));
       setToken(storedToken);
     }
+    setIsLoading(false);
   }, []);
 
   const login = async (params: LoginDTO.Params): Promise<boolean> => {
@@ -71,8 +73,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("token", token);
   };
 
+  const isManager = () => {
+    return user?.role === UserDTO.Role.MANAGER;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, isLoading, login, logout, isManager }}
+    >
       {children}
     </AuthContext.Provider>
   );
