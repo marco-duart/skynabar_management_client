@@ -109,3 +109,22 @@ export const CardFooter = styled.div`
   padding-top: ${({ theme }) => theme.spacing(2)};
   border-top: 1px solid ${({ theme }) => theme.colors.text.disabled}20;
 `;
+
+export const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
+
+  @media ${({ theme }) => theme.mediaQuery.tablet} {
+    flex-direction: row;
+  }
+`;
+
+export const Select = styled.select`
+  padding: ${({ theme }) => theme.spacing(2)};
+  border: 1px solid ${({ theme }) => theme.colors.text.disabled};
+  border-radius: ${({ theme }) => theme.shape.borderRadius.md};
+  font-size: ${({ theme }) => theme.typography.fontSize.base};
+  min-width: 200px;
+`;
