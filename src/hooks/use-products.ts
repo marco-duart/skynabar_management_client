@@ -2,42 +2,50 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../contexts/auth-context";
 import {
-  createProduct,
-  getProducts,
-  updateIdealQuantity,
-  withdrawProduct,
-  reverseWithdrawal,
-  restockProduct,
-  getShoppingList,
+  createProductService,
+  getProductsService,
+  updateIdealQuantityService,
+  withdrawProductService,
+  reverseWithdrawalService,
+  restockProductService,
+  getShoppingListService,
 } from "../services/products";
 import { IProduct } from "../services/products/DTO";
+
+export interface TranslatedProduct extends IProduct.Model {
+  translated_unit: string;
+}
+
+export interface TranslatedShoppingListItem extends IProduct.ShoppingListItem {
+  translated_unit: string;
+}
 
 export const useProducts = () => {
   const { token } = useAuth();
 
-  const [products, setProducts] = useState<IProduct.Model[]>([]);
-  const [shoppingList, setShoppingList] = useState<IProduct.ShoppingListItem[]>(
-    []
-  );
-  const [selectedProduct, setSelectedProduct] = useState<IProduct.Model | null>(
-    null
-  );
+  const [products, setProducts] = useState<TranslatedProduct[]>([]);
+  const [shoppingList, setShoppingList] = useState<
+    TranslatedShoppingListItem[]
+  >([]);
+  const [selectedProduct, setSelectedProduct] =
+    useState<TranslatedProduct | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchProducts = useCallback(async (): Promise<void> => {
     if (!token) return;
 
     setIsLoading(true);
-    setError(null);
 
     try {
-      const result = await getProducts(token);
+      const result = await getProductsService(token);
 
       if (result.success && result.data) {
-        setProducts(result.data);
+        const translatedProducts = result.data.map((product) => ({
+          ...product,
+          translated_unit: translateUnitType(product.unit_type),
+        }));
+        setProducts(translatedProducts);
       } else {
-        setError(result.message);
         toast.error(result.message);
       }
     } catch (err) {
@@ -45,7 +53,6 @@ export const useProducts = () => {
         err instanceof Error
           ? err.message
           : "Erro desconhecido ao buscar produtos";
-      setError(message);
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -56,15 +63,17 @@ export const useProducts = () => {
     if (!token) return;
 
     setIsLoading(true);
-    setError(null);
 
     try {
-      const result = await getShoppingList(token);
+      const result = await getShoppingListService(token);
 
       if (result.success && result.data) {
-        setShoppingList(result.data);
+        const translatedItems = result.data.map((item) => ({
+          ...item,
+          translated_unit: translateUnitType(item.unit_type),
+        }));
+        setShoppingList(translatedItems);
       } else {
-        setError(result.message);
         toast.error(result.message);
       }
     } catch (err) {
@@ -72,23 +81,20 @@ export const useProducts = () => {
         err instanceof Error
           ? err.message
           : "Erro desconhecido ao buscar lista de compras";
-      setError(message);
-      toast.error(message);
+      console.log(message);
     } finally {
       setIsLoading(false);
     }
   }, [token]);
 
-  const addProduct = useCallback(
-    async (
-      params: Omit<IProduct.ICreateProduct.Params, "token">
-    ): Promise<boolean> => {
+  const createProduct = useCallback(
+    async (params: IProduct.ICreateProduct.Params): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
 
       try {
-        const result = await createProduct(params, token);
+        const result = await createProductService(params, token);
 
         if (result.success && result.data) {
           toast.success(result.message);
@@ -109,14 +115,14 @@ export const useProducts = () => {
     [token, fetchProducts, fetchShoppingList]
   );
 
-  const updateProductQuantity = useCallback(
+  const updateIdealProductQuantity = useCallback(
     async (productId: number, idealQuantity: number): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
 
       try {
-        const result = await updateIdealQuantity(
+        const result = await updateIdealQuantityService(
           productId,
           { ideal_quantity: idealQuantity },
           token
@@ -141,14 +147,18 @@ export const useProducts = () => {
     [token, fetchProducts, fetchShoppingList]
   );
 
-  const removeFromStock = useCallback(
+  const withdrawProduct = useCallback(
     async (productId: number, quantity: number): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
 
       try {
-        const result = await withdrawProduct(productId, { quantity }, token);
+        const result = await withdrawProductService(
+          productId,
+          { quantity },
+          token
+        );
 
         if (result.success && result.data) {
           toast.success(result.message);
@@ -169,14 +179,18 @@ export const useProducts = () => {
     [token, fetchProducts, fetchShoppingList]
   );
 
-  const reverseWithdraw = useCallback(
+  const reverseWithdrawal = useCallback(
     async (productId: number, quantity: number): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
 
       try {
-        const result = await reverseWithdrawal(productId, { quantity }, token);
+        const result = await reverseWithdrawalService(
+          productId,
+          { quantity },
+          token
+        );
 
         if (result.success && result.data) {
           toast.success(result.message);
@@ -197,14 +211,18 @@ export const useProducts = () => {
     [token, fetchProducts, fetchShoppingList]
   );
 
-  const restock = useCallback(
+  const restockProduct = useCallback(
     async (productId: number, quantity: number): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
 
       try {
-        const result = await restockProduct(productId, { quantity }, token);
+        const result = await restockProductService(
+          productId,
+          { quantity },
+          token
+        );
 
         if (result.success && result.data) {
           toast.success(result.message);
@@ -225,8 +243,12 @@ export const useProducts = () => {
     [token, fetchProducts, fetchShoppingList]
   );
 
-  const selectProduct = (product: IProduct.Model | null) => {
+  const selectProduct = (product: TranslatedProduct | null) => {
     setSelectedProduct(product);
+  };
+
+  const translateUnitType = (unit: keyof typeof IProduct.UnitEnum): string => {
+    return IProduct.UnitLabels[unit] || unit;
   };
 
   useEffect(() => {
@@ -241,16 +263,15 @@ export const useProducts = () => {
     shoppingList,
     selectedProduct,
     isLoading,
-    error,
 
     fetchProducts,
     fetchShoppingList,
 
-    addProduct,
-    updateProductQuantity,
-    removeFromStock,
-    reverseWithdraw,
-    restock,
+    createProduct,
+    updateIdealProductQuantity,
+    withdrawProduct,
+    reverseWithdrawal,
+    restockProduct,
 
     selectProduct,
 
