@@ -7,8 +7,9 @@ import * as S from "./styles";
 
 export const Header = () => {
   const theme = useTheme();
-  const { user, logout } = useAuth();
+  const { user, logout, isManager } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const userIsManager = isManager();
 
   return (
     <S.Header>
@@ -20,12 +21,16 @@ export const Header = () => {
             <S.NavItem>
               <S.NavLink href="/home">Produtos</S.NavLink>
             </S.NavItem>
-            <S.NavItem>
-              <S.NavLink href="/shopping-list">Lista de Compras</S.NavLink>
-            </S.NavItem>
-            <S.NavItem>
-              <S.NavLink href="/movements">Movimentações</S.NavLink>
-            </S.NavItem>
+            {userIsManager && (
+              <S.NavItem>
+                <S.NavLink href="/shopping-list">Lista de Compras</S.NavLink>
+              </S.NavItem>
+            )}
+            {userIsManager && (
+              <S.NavItem>
+                <S.NavLink href="/movements">Movimentações</S.NavLink>
+              </S.NavItem>
+            )}
           </S.NavList>
 
           <S.UserMenu>
