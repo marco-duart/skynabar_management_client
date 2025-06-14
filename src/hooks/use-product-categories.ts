@@ -6,13 +6,13 @@ import {
   getProductCategoriesService,
   updateProductCategoryService,
 } from "../services/product-categories";
-import { IProductCategory } from "../services/product-categories/DTO";
+import { ProductCategoryDTO } from "../services/product-categories/DTO";
 
 export const useProductCategories = () => {
   const { token } = useAuth();
 
   const [productCategories, setProductCategories] = useState<
-    IProductCategory.Model[]
+    ProductCategoryDTO.Model[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +42,7 @@ export const useProductCategories = () => {
 
   const createProductCategory = useCallback(
     async (
-      params: IProductCategory.ICreateProductCategory.Params
+      params: ProductCategoryDTO.ICreateProductCategory.Params
     ): Promise<boolean> => {
       if (!token) return false;
 
@@ -72,7 +72,7 @@ export const useProductCategories = () => {
   const updateProductCategory = useCallback(
     async (
       productCategoryId: number,
-      params: IProductCategory.ICreateProductCategory.Params
+      params: ProductCategoryDTO.ICreateProductCategory.Params
     ): Promise<boolean> => {
       if (!token) return false;
 
