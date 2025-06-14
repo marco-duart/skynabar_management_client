@@ -1,4 +1,4 @@
-export namespace IProductCategory {
+export namespace ProductCategoryDTO {
   export interface Model {
     id: number;
     name: string;
