@@ -1,4 +1,4 @@
-export namespace IProduct {
+export namespace ProductDTO {
   export enum UnitEnum {
     unit = 0,
     liter = 1,
