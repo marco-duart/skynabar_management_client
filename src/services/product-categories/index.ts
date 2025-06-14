@@ -1,14 +1,14 @@
 import { isAxiosError } from "axios";
 import api from "../api";
-import { IProductCategory } from "./DTO";
+import { ProductCategoryDTO } from "./DTO";
 
 export const createProductCategoryService = async (
-  params: IProductCategory.ICreateProductCategory.Params,
+  params: ProductCategoryDTO.ICreateProductCategory.Params,
   token: string
 ) => {
   try {
     const response =
-      await api.post<IProductCategory.ICreateProductCategory.Response>(
+      await api.post<ProductCategoryDTO.ICreateProductCategory.Response>(
         "/product_categories",
         params,
         {
@@ -37,7 +37,7 @@ export const createProductCategoryService = async (
 export const getProductCategoriesService = async (token: string) => {
   try {
     const response =
-      await api.get<IProductCategory.IGetProductCategories.Response>(
+      await api.get<ProductCategoryDTO.IGetProductCategories.Response>(
         "/product_categories",
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -64,12 +64,12 @@ export const getProductCategoriesService = async (token: string) => {
 
 export const updateProductCategoryService = async (
   productCategoryId: number,
-  params: IProductCategory.IUpdateProductCategory.Params,
+  params: ProductCategoryDTO.IUpdateProductCategory.Params,
   token: string
 ) => {
   try {
     const response =
-      await api.patch<IProductCategory.IUpdateProductCategory.Response>(
+      await api.patch<ProductCategoryDTO.IUpdateProductCategory.Response>(
         `/products/${productCategoryId}/product_categories`,
         params,
         {
