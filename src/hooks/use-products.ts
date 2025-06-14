@@ -10,13 +10,13 @@ import {
   restockProductService,
   getShoppingListService,
 } from "../services/products";
-import { IProduct } from "../services/products/DTO";
+import { ProductDTO } from "../services/products/DTO";
 
-export interface TranslatedProduct extends IProduct.Model {
+export interface TranslatedProduct extends ProductDTO.Model {
   translated_unit: string;
 }
 
-export interface TranslatedShoppingListItem extends IProduct.ShoppingListItem {
+export interface TranslatedShoppingListItem extends ProductDTO.ShoppingListItem {
   translated_unit: string;
 }
 
@@ -88,7 +88,7 @@ export const useProducts = () => {
   }, [token]);
 
   const createProduct = useCallback(
-    async (params: IProduct.ICreateProduct.Params): Promise<boolean> => {
+    async (params: ProductDTO.ICreateProduct.Params): Promise<boolean> => {
       if (!token) return false;
 
       setIsLoading(true);
@@ -247,8 +247,8 @@ export const useProducts = () => {
     setSelectedProduct(product);
   };
 
-  const translateUnitType = (unit: keyof typeof IProduct.UnitEnum): string => {
-    return IProduct.UnitLabels[unit] || unit;
+  const translateUnitType = (unit: keyof typeof ProductDTO.UnitEnum): string => {
+    return ProductDTO.UnitLabels[unit] || unit;
   };
 
   useEffect(() => {
