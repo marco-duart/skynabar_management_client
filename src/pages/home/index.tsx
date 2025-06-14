@@ -10,7 +10,7 @@ import { useAuth } from "../../contexts/auth-context";
 import { Button } from "../../components/ui/button";
 import { Modal } from "../../components/ui/modal";
 import { ProductForm } from "../../components/forms/product-form";
-import { IProduct } from "../../services/products/DTO";
+import { ProductDTO } from "../../services/products/DTO";
 import { ProductFormData } from "../../schemas/product-schema";
 
 export const HomePage = () => {
@@ -31,16 +31,16 @@ export const HomePage = () => {
   const handleCreateProduct = async (formData: ProductFormData) => {
     setIsProductLoading(true);
     try {
-      const data: IProduct.ICreateProduct.Params = {
+      const data: ProductDTO.ICreateProduct.Params = {
         product: {
           name: formData.name,
           sku: formData.sku,
           product_category_id: formData.product_category_id,
-          unit_type: Object.keys(IProduct.UnitEnum).find(
+          unit_type: Object.keys(ProductDTO.UnitEnum).find(
             (key) =>
-              IProduct.UnitEnum[key as keyof typeof IProduct.UnitEnum] ===
+              ProductDTO.UnitEnum[key as keyof typeof ProductDTO.UnitEnum] ===
               formData.unit_type
-          ) as keyof typeof IProduct.UnitEnum,
+          ) as keyof typeof ProductDTO.UnitEnum,
           current_quantity: formData.current_quantity,
           ideal_quantity: formData.ideal_quantity,
         },
