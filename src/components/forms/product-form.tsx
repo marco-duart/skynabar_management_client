@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { productResolver, ProductFormData } from "../../schemas/product-schema";
-import { IProduct } from "../../services/products/DTO";
+import { ProductDTO } from "../../services/products/DTO";
 import { useProductCategories } from "../../hooks/use-product-categories";
 import * as S from "../forms/styles";
 import { LoadingSpinner } from "../loading-spinner";
@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 interface Props {
   onSubmit: (data: ProductFormData) => Promise<boolean>;
-  defaultValues?: Partial<IProduct.Model>;
+  defaultValues?: Partial<ProductDTO.Model>;
   onCancel: () => void;
   isLoading: boolean;
 }
@@ -34,8 +34,8 @@ export const ProductForm = ({
     if (defaultValues) {
       const unitTypeValue =
         typeof defaultValues.unit_type === "string"
-          ? IProduct.UnitEnum[
-              defaultValues.unit_type as keyof typeof IProduct.UnitEnum
+          ? ProductDTO.UnitEnum[
+              defaultValues.unit_type as keyof typeof ProductDTO.UnitEnum
             ]
           : defaultValues.unit_type;
 
@@ -51,7 +51,7 @@ export const ProductForm = ({
       });
     } else {
       reset({
-        unit_type: IProduct.UnitEnum.unit,
+        unit_type: ProductDTO.UnitEnum.unit,
         current_quantity: 0,
         ideal_quantity: 0,
       });
@@ -115,11 +115,11 @@ export const ProductForm = ({
           {...register("unit_type", { valueAsNumber: true })}
           disabled={isLoading}
         >
-          {Object.entries(IProduct.UnitEnum)
+          {Object.entries(ProductDTO.UnitEnum)
             .filter(([key]) => isNaN(Number(key)))
             .map(([key, value]) => (
               <option key={key} value={value}>
-                {IProduct.UnitLabels[key as keyof typeof IProduct.UnitLabels]}
+                {ProductDTO.UnitLabels[key as keyof typeof ProductDTO.UnitLabels]}
               </option>
             ))}
         </S.Select>
