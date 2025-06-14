@@ -1,14 +1,14 @@
 import { isAxiosError } from "axios";
 import api from "../api";
-import { IProduct } from "./DTO";
+import { ProductDTO } from "./DTO";
 import { buildProductFilters } from "../../helpers/build-products-filters";
 
 export const createProductService = async (
-  params: IProduct.ICreateProduct.Params,
+  params: ProductDTO.ICreateProduct.Params,
   token: string
 ) => {
   try {
-    const response = await api.post<IProduct.ICreateProduct.Response>(
+    const response = await api.post<ProductDTO.ICreateProduct.Response>(
       "/products",
       params,
       {
@@ -45,7 +45,7 @@ export const getProductsService = async (
   try {
     const ransackParams = filters ? buildProductFilters(filters) : undefined;
 
-    const response = await api.get<IProduct.IGetProducts.Response>(
+    const response = await api.get<ProductDTO.IGetProducts.Response>(
       "/products",
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -74,11 +74,11 @@ export const getProductsService = async (
 
 export const updateIdealQuantityService = async (
   productId: number,
-  params: IProduct.IUpdateIdealQuantity.Params,
+  params: ProductDTO.IUpdateIdealQuantity.Params,
   token: string
 ) => {
   try {
-    const response = await api.patch<IProduct.IUpdateIdealQuantity.Response>(
+    const response = await api.patch<ProductDTO.IUpdateIdealQuantity.Response>(
       `/products/${productId}/update_ideal_quantity`,
       params,
       {
@@ -106,11 +106,11 @@ export const updateIdealQuantityService = async (
 
 export const withdrawProductService = async (
   productId: number,
-  params: IProduct.IWithdrawProduct.Params,
+  params: ProductDTO.IWithdrawProduct.Params,
   token: string
 ) => {
   try {
-    const response = await api.patch<IProduct.IWithdrawProduct.Response>(
+    const response = await api.patch<ProductDTO.IWithdrawProduct.Response>(
       `/products/${productId}/withdraw_from_stock`,
       params,
       {
@@ -138,11 +138,11 @@ export const withdrawProductService = async (
 
 export const reverseWithdrawalService = async (
   productId: number,
-  params: IProduct.IReverseWithdrawal.Params,
+  params: ProductDTO.IReverseWithdrawal.Params,
   token: string
 ) => {
   try {
-    const response = await api.patch<IProduct.IReverseWithdrawal.Response>(
+    const response = await api.patch<ProductDTO.IReverseWithdrawal.Response>(
       `/products/${productId}/reverse_withdrawal`,
       params,
       {
@@ -170,11 +170,11 @@ export const reverseWithdrawalService = async (
 
 export const restockProductService = async (
   productId: number,
-  params: IProduct.IRestockProduct.Params,
+  params: ProductDTO.IRestockProduct.Params,
   token: string
 ) => {
   try {
-    const response = await api.patch<IProduct.IRestockProduct.Response>(
+    const response = await api.patch<ProductDTO.IRestockProduct.Response>(
       `/products/${productId}/restock`,
       params,
       {
@@ -202,7 +202,7 @@ export const restockProductService = async (
 
 export const getShoppingListService = async (token: string) => {
   try {
-    const response = await api.get<IProduct.IGetShoppingList.Response>(
+    const response = await api.get<ProductDTO.IGetShoppingList.Response>(
       "/products/shopping_list",
       {
         headers: { Authorization: `Bearer ${token}` },
