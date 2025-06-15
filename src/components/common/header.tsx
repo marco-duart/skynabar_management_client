@@ -28,7 +28,7 @@ export const Header = () => {
             )}
             {userIsManager && (
               <S.NavItem>
-                <S.NavLink href="/movements">Movimentações</S.NavLink>
+                <S.NavLink href="/stock-reports">Movimentações</S.NavLink>
               </S.NavItem>
             )}
           </S.NavList>
