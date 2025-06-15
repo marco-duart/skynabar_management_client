@@ -1,14 +1,19 @@
 import styled, { css } from "styled-components";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "icon" | "text";
-export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "icon"
+  | "text";
+export type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonContainerProps {
-  variant: ButtonVariant;
-  isLoading?: boolean;
-  hasIcon: boolean;
-  iconPosition: 'left' | 'right';
-  size: ButtonSize;
+  $variant: ButtonVariant;
+  $isLoading?: boolean;
+  $hasIcon: boolean;
+  $iconPosition: "left" | "right";
+  $size: ButtonSize;
 }
 
 const sizeStyles = {
@@ -41,19 +46,21 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
   overflow: hidden;
   line-height: 1;
 
-  ${({ size }) => sizeStyles[size]}
+  ${({ $size }) => sizeStyles[$size]}
 
-  ${({ hasIcon, iconPosition }) => hasIcon && css`
-    flex-direction: ${iconPosition === 'left' ? 'row' : 'row-reverse'};
-  `}
+  ${({ $hasIcon, $iconPosition }) =>
+    $hasIcon &&
+    css`
+      flex-direction: ${$iconPosition === "left" ? "row" : "row-reverse"};
+    `}
 
   &:disabled {
     cursor: not-allowed;
     opacity: 0.7;
   }
 
-  ${({ variant, theme }) => {
-    switch (variant) {
+  ${({ $variant, theme }) => {
+    switch ($variant) {
       case "primary":
         return css`
           background-color: ${theme.colors.primary.main};
@@ -131,8 +138,8 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     }
   }}
 
-  ${({ isLoading }) =>
-    isLoading &&
+  ${({ $isLoading }) =>
+    $isLoading &&
     css`
       &::after {
         content: "";
@@ -153,11 +160,11 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     `}
 `;
 
-export const IconWrapper = styled.span<{ position: 'left' | 'right' }>`
+export const IconWrapper = styled.span<{ position: "left" | "right" }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   svg {
     width: ${({ theme }) => theme.spacing(3)};
     height: ${({ theme }) => theme.spacing(3)};
