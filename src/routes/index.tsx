@@ -6,6 +6,7 @@ import { BaseLayout } from "../components/common/base-layout";
 import { LoginPage } from "../pages/login";
 import { HomePage } from "../pages/home";
 import { ShoppingListPage } from "../pages/shopping-list";
+import { StockReportPage } from "../pages/stock-report";
 import { LoadingSpinner } from "../components/loading-spinner";
 
 export default function Router() {
@@ -30,9 +31,9 @@ export default function Router() {
         >
           <Route path="/home" element={<HomePage />} />
           <Route path="/shopping-list" element={<ShoppingListPage />} />
+          <Route path="/stock-reports" element={<StockReportPage />} />
           {/* <Route path="/shopping-list" element={<PrivateRoute requiredRole={[UserDTO.Role.MANAGER]}><ShoppingListPage /></PrivateRoute>} /> */}
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
