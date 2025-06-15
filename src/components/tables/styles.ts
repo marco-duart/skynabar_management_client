@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const TableContainer = styled.div`
   width: 100%;
@@ -12,6 +12,12 @@ export const Table = styled.table`
   background-color: ${({ theme }) => theme.colors.background.paper};
   border-radius: ${({ theme }) => theme.shape.borderRadius.md};
   box-shadow: ${({ theme }) => theme.shadows.sm};
+`;
+
+export const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
 `;
 
 export const TableHead = styled.thead`
@@ -127,4 +133,18 @@ export const Select = styled.select`
   border-radius: ${({ theme }) => theme.shape.borderRadius.md};
   font-size: ${({ theme }) => theme.typography.fontSize.base};
   min-width: 200px;
+`;
+
+export const DateInfo = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.text.secondary};
+  margin-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+export const DateHighlight = styled.span`
+  display: block;
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.primary.main};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
