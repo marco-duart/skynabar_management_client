@@ -11,6 +11,7 @@ interface Props {
   defaultValues?: Partial<ProductDTO.Model>;
   onCancel: () => void;
   isLoading: boolean;
+  isEditMode?: boolean;
 }
 
 export const ProductForm = ({
@@ -18,6 +19,7 @@ export const ProductForm = ({
   defaultValues,
   onCancel,
   isLoading,
+  isEditMode = false,
 }: Props) => {
   const { productCategories, isLoading: isCategoriesLoading } =
     useProductCategories();
@@ -31,7 +33,7 @@ export const ProductForm = ({
   });
 
   useEffect(() => {
-    if (defaultValues) {
+    if (defaultValues && !isCategoriesLoading) {
       const unitTypeValue =
         typeof defaultValues.unit_type === "string"
           ? ProductDTO.UnitEnum[
@@ -48,15 +50,18 @@ export const ProductForm = ({
         ideal_quantity: defaultValues.ideal_quantity
           ? Number(defaultValues.ideal_quantity)
           : 0,
+        product_category_id: defaultValues.product_category_id
+          ? Number(defaultValues.product_category_id)
+          : undefined,
       });
-    } else {
+    } else if (!defaultValues) {
       reset({
         unit_type: ProductDTO.UnitEnum.unit,
         current_quantity: 0,
         ideal_quantity: 0,
       });
     }
-  }, [defaultValues, reset]);
+  }, [defaultValues, reset, isCategoriesLoading]);
 
   const handleFormSubmit = async (data: ProductFormData) => {
     const success = await onSubmit(data);
@@ -71,7 +76,7 @@ export const ProductForm = ({
           id="name"
           placeholder="Digite o nome do produto"
           {...register("name")}
-          disabled={isLoading}
+          disabled={isLoading || isEditMode}
         />
         {errors.name && <S.ErrorMessage>{errors.name.message}</S.ErrorMessage>}
       </S.InputContainer>
@@ -82,29 +87,41 @@ export const ProductForm = ({
           id="sku"
           placeholder="Digite o SKU do produto"
           {...register("sku")}
-          disabled={isLoading}
+          disabled={isLoading || isEditMode}
         />
         {errors.sku && <S.ErrorMessage>{errors.sku.message}</S.ErrorMessage>}
       </S.InputContainer>
 
       <S.InputContainer>
         <S.Label htmlFor="product_category_id">Categoria</S.Label>
-        <S.Select
-          id="product_category_id"
-          {...register("product_category_id", {
-            valueAsNumber: true,
-          })}
-          disabled={isLoading || isCategoriesLoading}
-        >
-          <option value="">Selecione uma categoria</option>
-          {productCategories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </S.Select>
-        {errors.product_category_id && (
-          <S.ErrorMessage>{errors.product_category_id.message}</S.ErrorMessage>
+        {isCategoriesLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <S.Select
+              id="product_category_id"
+              {...register("product_category_id", {
+                valueAsNumber: true,
+              })}
+              disabled={isLoading || isEditMode}
+            >
+              <option value="">Selecione uma categoria</option>
+              {productCategories.map((category) => (
+                <option
+                  key={category.id}
+                  value={category.id}
+                  selected={defaultValues?.product_category_id === category.id}
+                >
+                  {category.name}
+                </option>
+              ))}
+            </S.Select>
+            {errors.product_category_id && (
+              <S.ErrorMessage>
+                {errors.product_category_id.message}
+              </S.ErrorMessage>
+            )}
+          </>
         )}
       </S.InputContainer>
 
@@ -113,13 +130,17 @@ export const ProductForm = ({
         <S.Select
           id="unit_type"
           {...register("unit_type", { valueAsNumber: true })}
-          disabled={isLoading}
+          disabled={isLoading || isEditMode}
         >
           {Object.entries(ProductDTO.UnitEnum)
             .filter(([key]) => isNaN(Number(key)))
             .map(([key, value]) => (
               <option key={key} value={value}>
-                {ProductDTO.UnitLabels[key as keyof typeof ProductDTO.UnitLabels]}
+                {
+                  ProductDTO.UnitLabels[
+                    key as keyof typeof ProductDTO.UnitLabels
+                  ]
+                }
               </option>
             ))}
         </S.Select>
@@ -139,7 +160,7 @@ export const ProductForm = ({
           {...register("current_quantity", {
             valueAsNumber: true,
           })}
-          disabled={isLoading}
+          disabled={isLoading || isEditMode}
         />
         {errors.current_quantity && (
           <S.ErrorMessage>{errors.current_quantity.message}</S.ErrorMessage>
