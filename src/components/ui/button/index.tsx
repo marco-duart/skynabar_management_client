@@ -28,13 +28,13 @@ export const Button = ({
       {...props}
     >
       {icon && iconPosition === "left" && (
-        <S.IconWrapper position="left">{icon}</S.IconWrapper>
+        <S.IconWrapper $position="left">{icon}</S.IconWrapper>
       )}
 
       {children}
 
       {icon && iconPosition === "right" && (
-        <S.IconWrapper position="right">{icon}</S.IconWrapper>
+        <S.IconWrapper $position="right">{icon}</S.IconWrapper>
       )}
     </S.ButtonContainer>
   );

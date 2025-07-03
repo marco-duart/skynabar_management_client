@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 export type ButtonVariant =
   | "primary"
   | "secondary"
+  | "info"
+  | "success"
   | "outline"
   | "icon"
   | "text";
@@ -87,6 +89,32 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
             box-shadow: 0 0 0 2px ${theme.colors.secondary.light};
           }
         `;
+      case "info":
+        return css`
+          background-color: ${theme.colors.status.info};
+          color: ${theme.colors.common.white};
+
+          &:hover:not(:disabled) {
+            background-color: ${theme.colors.secondary.dark};
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px ${theme.colors.secondary.light};
+          }
+        `;
+      case "success":
+        return css`
+          background-color: ${theme.colors.status.success};
+          color: ${theme.colors.common.white};
+
+          &:hover:not(:disabled) {
+            background-color: ${theme.colors.secondary.dark};
+          }
+
+          &:focus {
+            box-shadow: 0 0 0 2px ${theme.colors.secondary.light};
+          }
+        `;
       case "outline":
         return css`
           background-color: transparent;
@@ -160,7 +188,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     `}
 `;
 
-export const IconWrapper = styled.span<{ position: "left" | "right" }>`
+export const IconWrapper = styled.span<{ $position: "left" | "right" }>`
   display: flex;
   align-items: center;
   justify-content: center;
