@@ -16,7 +16,8 @@ export interface TranslatedProduct extends ProductDTO.Model {
   translated_unit: string;
 }
 
-export interface TranslatedShoppingListItem extends ProductDTO.ShoppingListItem {
+export interface TranslatedShoppingListItem
+  extends ProductDTO.ShoppingListItem {
   translated_unit: string;
 }
 
@@ -247,7 +248,9 @@ export const useProducts = () => {
     setSelectedProduct(product);
   };
 
-  const translateUnitType = (unit: keyof typeof ProductDTO.UnitEnum): string => {
+  const translateUnitType = (
+    unit: keyof typeof ProductDTO.UnitEnum
+  ): string => {
     return ProductDTO.UnitLabels[unit] || unit;
   };
 
