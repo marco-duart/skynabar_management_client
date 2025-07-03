@@ -14,18 +14,18 @@ import useMediaQuery from "../../hooks/use-media-query";
 import { Button } from "../ui/button";
 import { useAuth } from "../../contexts/auth-context";
 
-export const ProductsTable = () => {
+interface Props {
+  onEditProduct: (product: TranslatedProduct) => void;
+}
+
+export const ProductsTable = ({ onEditProduct }: Props) => {
   const theme = useTheme();
   const { isManager } = useAuth();
-  const {
-    products,
-    isLoading,
-    withdrawProduct,
-    selectProduct,
-    restockProduct,
-  } = useProducts();
+  const { products, isLoading, withdrawProduct, restockProduct } =
+    useProducts();
   const [columnResizeMode] = useState<ColumnResizeMode>("onChange");
   const isTabletOrLarger = useMediaQuery(theme.mediaQuery.tablet);
+  const userIsManager = isManager();
 
   const columns: ColumnDef<TranslatedProduct>[] = [
     {
@@ -63,26 +63,28 @@ export const ProductsTable = () => {
       header: "Ações",
       cell: ({ row }) => (
         <S.ActionsContainer>
+          {userIsManager && (
+            <Button
+              variant="secondary"
+              onClick={() => onEditProduct(row.original)}
+              aria-label="Editar"
+            >
+              Editar
+            </Button>
+          )}
           <Button
-            variant="icon"
-            onClick={() => selectProduct(row.original)}
-            aria-label="Editar"
-          >
-            <Edit size={16} color={theme.colors.primary.main} />
-          </Button>
-          <Button
-            variant="icon"
+            variant="info"
             onClick={() => withdrawProduct(row.original.id, 1)}
             aria-label="Retirar"
           >
-            <Minus size={16} color={theme.colors.status.error} />
+            Retirar
           </Button>
           <Button
-            variant="icon"
+            variant="success"
             onClick={() => restockProduct(row.original.id, 1)}
             aria-label="Reabastecer"
           >
-            <Plus size={16} color={theme.colors.status.success} />
+            Reabastecer
           </Button>
         </S.ActionsContainer>
       ),
@@ -132,7 +134,7 @@ export const ProductsTable = () => {
                 onClick={() => withdrawProduct(product.id, 1)}
                 aria-label="Retirar"
               >
-                <Minus size={16} color={theme.colors.status.error} />
+                <Minus size={16} color={theme.colors.status.info} />
               </Button>
               <Button
                 variant="icon"
@@ -141,10 +143,10 @@ export const ProductsTable = () => {
               >
                 <Plus size={16} color={theme.colors.status.success} />
               </Button>
-              {isManager() && (
+              {userIsManager && (
                 <Button
                   variant="icon"
-                  onClick={() => selectProduct(product)}
+                  onClick={() => onEditProduct(product)}
                   aria-label="Editar"
                 >
                   <Edit size={16} color={theme.colors.primary.main} />
