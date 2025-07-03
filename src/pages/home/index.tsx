@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProducts } from "../../hooks/use-products";
 import { ProductsTable } from "../../components/tables/products-table";
 import * as S from "./styles";
@@ -27,6 +27,7 @@ export const HomePage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isProductLoading, setIsProductLoading] = useState(false);
+  const userIsManager = isManager();
 
   const handleCreateProduct = async (formData: ProductFormData) => {
     setIsProductLoading(true);
@@ -68,11 +69,17 @@ export const HomePage = () => {
     }
   };
 
+  useEffect(() => {
+    if (selectedProduct) {
+      setIsEditModalOpen(true);
+    }
+  }, [selectedProduct]);
+
   return (
     <S.PageContainer>
       <S.Header>
         <S.Title>Gestão de Estoque</S.Title>
-        {isManager() && (
+        {userIsManager && (
           <Button
             onClick={() => setIsCreateModalOpen(true)}
             aria-label="Criar produto"
@@ -89,7 +96,12 @@ export const HomePage = () => {
         ) : (
           <>
             {hasProducts ? (
-              <ProductsTable />
+              <ProductsTable
+                onEditProduct={(product) => {
+                  selectProduct(product);
+                  setIsEditModalOpen(true);
+                }}
+              />
             ) : (
               <EmptyState
                 icon={<Box size={48} color={theme.colors.text.secondary} />}
@@ -130,6 +142,7 @@ export const HomePage = () => {
               selectProduct(null);
             }}
             isLoading={isProductLoading}
+            isEditMode={true}
           />
         )}
       </Modal>
