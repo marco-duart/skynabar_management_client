@@ -30,9 +30,8 @@ export default function Router() {
           }
         >
           <Route path="/home" element={<HomePage />} />
-          <Route path="/shopping-list" element={<ShoppingListPage />} />
+          <Route path="/shopping-list" element={<PrivateRoute requiredRole={[UserDTO.Role.MANAGER]}><ShoppingListPage /></PrivateRoute>} />
           <Route path="/stock-reports" element={<StockReportPage />} />
-          {/* <Route path="/shopping-list" element={<PrivateRoute requiredRole={[UserDTO.Role.MANAGER]}><ShoppingListPage /></PrivateRoute>} /> */}
         </Route>
       </Routes>
     </BrowserRouter>
